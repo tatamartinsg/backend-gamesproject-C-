@@ -1,29 +1,46 @@
-using games_code.Model;
-using games_code.Repositories.Interfaces;
+using System.Data.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using games_api.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using games_api.Models;
 
-namespace games_code.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class GameController : ControllerBase
+namespace games_api.Controllers
 {
-    private readonly IGame _gameRepository;
+    [ApiController]
+    [Route("[controller]")]
 
-    public GameController(IGame gameRepository)
+    public class GameController : ControllerBase
     {
-        _gameRepository = gameRepository;
-    }
+        private DataContext _dataContext;
 
-    [HttpGet()]
-    public IActionResult getAllGames()
-    {
-        var games = _gameRepository.getAllGames();
-
-        if(games.Count() == 0){
-             return NoContent();
+        public GameController(DataContext dataContext){
+            this._dataContext = dataContext;
         }
-    
-        return Ok(games);
+
+        [HttpGet]
+        public async Task<ActionResult<List<Game>>> getAllGames(){
+            // var teste = await (
+            //     from g in _dataContext.game 
+            //     join i in _dataContext.image
+            //     on g.idGame equals i.idGame
+            //     select new)
+            //     .ToListAsync();
+            // return Ok(teste);
+
+            // foreach(var obj in teste){
+            //     Console.WriteLine($"Model {obj}");
+            // }
+
+            var data = await _dataContext.Game
+                            .Include(i => i.Images)
+                            .ToListAsync();
+
+            return Ok(data);
+        }
+
     }
 }

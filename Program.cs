@@ -1,17 +1,19 @@
-using games_code.Repositories;
-using games_code.Repositories.Interfaces;
+using games_api.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<IGame>( factory =>{
-   var connectionString = builder.Configuration.GetSection("DatabaseSettings").GetValue<string>("ConnectionString");
-   return new GameRepository(connectionString);
-});
-
-
 builder.Services.AddControllers();
+
+string connectionString = builder.Configuration.GetConnectionString("conexaoMySQL");
+
+builder.Services.AddDbContext<DataContext>(opt => opt.UseMySql(connectionString,
+     ServerVersion.AutoDetect(connectionString)
+));
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "3N6RluZOlJcfuJTW9nQfjfmF41kHKVcoJ7V46VIfBDs=",
-  "Source": "games-code",
-  "BasePath": "_content/games-code",
+  "Hash": "/r93Ez1eTdNFJJsz61/mVbnifFtCoZULre0CwwP1rn8=",
+  "Source": "games_api",
+  "BasePath": "_content/games_api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
